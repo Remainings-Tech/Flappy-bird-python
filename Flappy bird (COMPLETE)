@@ -1,5 +1,5 @@
 #kenny
-#1/14/25
+#1/14/25-2/20/25
 #1/14 Daily Code: FLAPPY BIRD
 import pygame
 import random
@@ -12,12 +12,21 @@ font = pygame.font.Font(None, 30) #font for score
 font2 = pygame.font.Font(None, 70) #larger font
 pipe_image = pygame.image.load(r"C:\Users\802910\Desktop\red.jpg")
 background_image = pygame.image.load(r"C:\Users\802910\Desktop\photo-1475274047050-1d0c0975c63e.jpg")
+BirdImg = pygame.image.load("BirdImg.png")
 score = 0 #score variable
 #two x positions for the two backgrounds
 bg_x1 = 0
 bg_x2 = 800
 
 running = True
+
+#animation variab;es variabbles
+frameWidth = 32
+frameHeight = 32
+RowNum = 0 #for left animation, this will need to change for other animation
+framenum = 0
+ticker = 0
+
 #Bird class
 class Bird:
     def __init__(self):
@@ -75,7 +84,10 @@ while running: #game loop-------------------------------------------------------
     if ticker%10 == 0: #every 10 frames reset
         ticker = 0 #reset timer
         score += 1 #increment score
-    
+        framenum+=1
+    if framenum>11:
+        framenum=0
+        
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -119,13 +131,16 @@ while running: #game loop-------------------------------------------------------
     #Background draw
     screen.blit(background_image, (bg_x1, 0))
     screen.blit(background_image, (bg_x2, 0))
-    bird.draw()
+    #bird.draw()
+    screen.blit(BirdImg, (50, bird.y), (frameWidth*framenum, RowNum*frameHeight, frameWidth, frameHeight))
+    
+    for pipe in pipes:
+        pipe.draw()
+    
     score_text = font.render("Score:", True, (255, 255, 255))
     screen.blit(score_text, (650, 20)) #position the socre in the top right question
     score_text2 = font.render(str(score), True, (255, 255, 255))
     screen.blit(score_text2, (750, 20)) #position the socre in the top right question
-    for pipe in pipes:
-        pipe.draw()
     
     pygame.display.flip()
     
@@ -137,4 +152,4 @@ pygame.display.flip()
 pygame.time.delay(2000) #delay in milliseconds
 pygame.quit()
 
-pygame.quit()  
+pygame.quit()
